@@ -1,6 +1,7 @@
 /* ===== Add Product Page ===== */
 
 .add-product-container {
+  margin-top: 40px;
   min-height: 70vh;
   display: flex;
   margin-left: 100px;
@@ -13,13 +14,20 @@
 
 .add-product-form {
   background-color: #fff;
+  margin-top: 10px;
+  margin-bottom: 90px;
   border: 1px solid #ddd;
   padding: 50px 40px;
-  max-width: 700px;
+  max-width: 500px;
   width: 100%;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
+.add-product-form:hover{
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.966);
+     transform: translateY(-5px);
+}
+
 
 .add-product-form h2 {
   text-align: center;

@@ -8,13 +8,11 @@ let Header = ()=>{
       <ul className="nav-left">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/shop">Shop</Link></li>
-        <li><Link to="/lookbook">Lookbook</Link></li>
-        <li><Link to="/blog">Blog</Link></li>
         <li><Link to="/contact">Contact</Link></li>
       </ul>
 
       <div className="nav-center">
-        <Link to="/" className="logo"><i>Day.</i> DREAM</Link>
+        <Link to="/" className="logo"> DREAM HOME FURNITURE</Link>
       </div>
 
       <ul className="nav-right">

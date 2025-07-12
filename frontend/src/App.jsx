@@ -4,6 +4,9 @@ import AdminLogin from './admin/adminlogin';
 import AdminDash from "./Admin/AdminDash"
 import FrontPage from "./pages/FrontPage"
 import AddProduct from "./Admin/AddProducts"
+import UserRegister from "./User/UserRegister"
+import UserDash from "./User/UserDash"
+import Userlogin from "./User/Userlogin"
 
   
 function App() {
@@ -22,6 +25,10 @@ function App() {
           <Route path="/admindash" element={<AdminDash />} >
          <Route  path='addproduct' element={<AddProduct/>} />
           </Route>
+
+          <Route path="userregis" element={<UserRegister />} />
+          <Route path="userdash" element={<UserDash />} />
+          <Route path="userlogin" element={<Userlogin />} />
         </Routes>
 
    </>

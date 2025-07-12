@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => (
     <footer style={{
-        background: "linear-gradient(90deg,rgb(153, 22, 125) 0%,rgb(183, 192, 207) 100%)",
+        background: "linear-gradient(90deg,rgb(180, 217, 236) 0%,rgb(183, 192, 207) 100%)",
         color: "#fff",
         padding: "2rem 0",
         textAlign: "center",
@@ -29,6 +29,7 @@ const Footer = () => (
             </div>
         </div>
     </footer>
+    
 );
 
 export default Footer;
