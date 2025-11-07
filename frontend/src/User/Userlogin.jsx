@@ -9,6 +9,7 @@ const Userlogin = () => {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -62,7 +63,7 @@ const Userlogin = () => {
           <div className="form-group">
             <label style={{ fontSize: "20px" }}>Enter Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               autoComplete="akki"

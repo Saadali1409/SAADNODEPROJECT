@@ -8,13 +8,18 @@ import { FiPackage } from "react-icons/fi";
 import { TbHelpTriangleFilled } from "react-icons/tb";
 import { LuLogOut } from "react-icons/lu";
 import { MdHomeRepairService } from "react-icons/md";
+import toast, {Toaster} from "react-hot-toast";
 
 const UserDash = () => {
   const navigate = useNavigate();
 
   const logout = () => {
     localStorage.clear();
+    toast.success("User Loged Out Successfully!! ")
+    setTimeout(()=>{
     navigate("/");
+    },1500);//wait 1 sec
+
   };
 
   return (
@@ -27,7 +32,7 @@ const UserDash = () => {
             <LuLogOut /> Log out!
           </Button>
         </div>
-        {/* <hr style={{ color: "white" }} /> */}
+        
         <h2 style={{ color: "white" }}>Welcome!</h2>
         <div className="sidetab">
           <ul>
@@ -70,6 +75,7 @@ const UserDash = () => {
         </div>
 
         <Outlet />
+        <Toaster position="top-center"  reverseOrder={false}/>
       </div>
     </>
   );

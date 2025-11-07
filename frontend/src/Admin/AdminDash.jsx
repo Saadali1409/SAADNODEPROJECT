@@ -1,13 +1,20 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Toster from 'react-hot-toast';
 import '../css/Admindash.css';
+
+
 const AdminDashboard = () => {
 
   const navigate = useNavigate();
 
   const logout = () => {
     localStorage.clear();
+    toast.success(" Admin Logout successfully");
+    setTimeout(() => {
     navigate("/");
+    }, 1000); //1 second delay
   };
 
   return (
@@ -50,7 +57,7 @@ const AdminDashboard = () => {
         </main>
        </div>
        </div>
-
+        <Toster position="top-center" reverseOrder={false} />
     </>
   );
 }

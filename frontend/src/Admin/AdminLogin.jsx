@@ -1,7 +1,7 @@
 import  { useState } from 'react'
 import BackEndUrl from '../utils/BackEndUrl'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Outlet,useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import '../css/AdminLogin.css'
@@ -21,27 +21,30 @@ const AdminLogin = () => {
 
         try {
             
-        const response = await axios.post(api, {adminId:adminId, password:password});
-        toString.success (response.data.msg,{
-          position:"top-center",
-          autoClose: 2000,
-          hideProgressBar:false,
+        const response = await axios.post(`${BackEndUrl}/admin/adminlogin`, {
+            adminId,
+            password,
+          
         });
-           localStorage.setItem("adminId",response.data.adminId)
 
-           setTimeout(()=>navigate('/admindash'),2500);
+           const {token, admin, msg} = response.data;
+
+           localStorage.setItem("adminId",adminId._id);
+            localStorage.setItem( "token", token);
+
+            toast.success("Admin Login successful",)
+
+           setTimeout(()=>navigate('/admindash'),1000); //1 second delay
 
         
 
         } catch (error) {
-          toast.error(error.response?.msg || "login failed",{
-           position:"top-center",
-           autoClose:3000,
-           hideProgressBar:false,
-         } );
+          toast.error(error?.response?.data?.msg || "login failed");
+            console.error("Login error:", error?.response?.data || error.message);
+           
             
         }
-    }
+    };
       
   return (
     
@@ -73,6 +76,7 @@ const AdminLogin = () => {
       </div>
         <ToastContainer />
     </div>
+    <TOster position="top-center"/>
        
     </>
   )

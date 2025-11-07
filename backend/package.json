@@ -9,16 +9,23 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "body": "^5.1.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
     "dotenv": "^17.0.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.536.0",
     "mongoose": "^8.16.1",
     "multer": "^2.0.1",
     "multer-storage-cloudinary": "^4.0.0",
     "parser": "^0.1.4",
-    "react-router-dom": "^7.6.3"
+    "razorpay": "^2.9.6",
+    "react-router-dom": "^7.6.3",
+    "react-toastify": "^11.0.5"
   }
 }

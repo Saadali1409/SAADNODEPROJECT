@@ -46,94 +46,65 @@ const AddProducts = () => {
           
          }
 
-        //  await axios.post(api,formData).then((res)=>{
+         await axios.post(api,formData).then((res)=>{
             
-        //     console.log(res.data)
-        //  })
-        //  console.log(formData)
+            console.log(res.data)
+         })
+         console.log(formData)
+          toast.success("Product added successfull");
 
   
 
-       try {
-      const res = await axios.post(api, formData);
-      console.log(res.data);
-      toast.success('Product added successfully!', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to add product.', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-    }
+    //    try {
+    //   const res = await axios.post(api, formData);
+    //   console.log(res.data);
+    //   toast.success('Product added successfully!', {
+    //     position: 'top-right',
+    //     autoClose: 3000,
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error('Failed to add product.', {
+    //     position: 'top-right',
+    //     autoClose: 3000,
+    //   });
+    // }
 
  }    
  
   return (
     <>
-        <div className="add-product-container">
-      <form className="add-product-form" onSubmit={formSubmit}>
-        <h2>Add Product</h2>
-        <ul>
-          <li>
-            <label htmlFor="name">Enter Product Name *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              onChange={handleInput}
-              required
-            />
-          </li>
+        <div id="contain">
+        <Form id='frm' >
+          <h3>Add Product</h3>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label id='lavel' >Enter Product name</Form.Label>
+            <Form.Control type="text" name='name' placeholder='Product name' onChange={handleInput}  />
+          </Form.Group>
 
-          
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Enter Product description</Form.Label>
+            <Form.Control type="text" name='description' placeholder='Description' onChange={handleInput} />
+          </Form.Group>
 
-          <li>
-            <label htmlFor="price">Enter Price *</label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              onChange={handleInput}
-              required
-            />
-          </li>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Enter Price</Form.Label>
+            <Form.Control type="number" name='price' placeholder='Price' onChange={handleInput} />
+          </Form.Group>
 
-          <li>
-            <label htmlFor="category">Select Category *</label>
-            <select
-              id="category"
-              name="category"
-              onChange={handleInput}
-              required
-            >
-              <option value="">Diam Volutpat</option>
-              <option value="male">Aliquam Blandit</option>
-              <option value="female">Augue Mauris</option>
-              <option value="unisex">Bibendum Arcu</option>
-              <option value="kids">Commodo Amcorper</option>
-              <option value="kids">Diam Arcu</option>
-            </select>
-          </li>
+         
 
-          <li>
-            <label htmlFor="files">Choose Files *</label>
-            <input
-              type="file"
-              id="files"
-              multiple
-              onChange={handleFile}
-              required
-            />
-          </li>
-        </ul>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Choose files</Form.Label>
+            <Form.Control type="file" multiple  onChange={handleFile} />
+          </Form.Group>
 
-        <button type="submit">Add Product</button>
-      </form>
-    </div>
-       <ToastContainer />
+          <Button id='btn' variant="primary" type="submit" onClick={formSubmit}>
+            Add Product
+          </Button>
+        </Form>
+      </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }

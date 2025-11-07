@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import BackEndUrl from '../utils/BackEndUrl';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
 
 const UserRegister = () => {
     const nav = useNavigate()
     const[inp, setInp] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleInput = async(e)=>{
+    const handleInput = (e)=>{
 
         let name = e.target.name;
         let value = e.target.value;
@@ -19,14 +21,21 @@ const UserRegister = () => {
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
+        
+        
         let api = `${BackEndUrl}/user/userregis`
 
         try {
             
             const response = await axios.post(api, inp);
             console.log(response);
-            nav('/userlogin')
+            toast.success("User Registered Successfully!!")
+            setTimeout(()=>{
+            Navigate('/');
+            }, 1500);//wait 1 sec
 
+            nav('/userlogin');
+          
         } catch (error) {
             console.log(error);
             
@@ -90,6 +99,7 @@ const UserRegister = () => {
           </div>
           <button onClick={handleSubmit}>Register</button>
         </div>
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>
   );

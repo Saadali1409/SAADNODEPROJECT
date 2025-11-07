@@ -13,6 +13,7 @@ let Layout=()=>{
         {/* <FrontPage/> */}
         <Outlet/>
         
+        
         <Footer/>
      
         </>
