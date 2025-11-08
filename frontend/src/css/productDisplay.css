@@ -1,0 +1,189 @@
+.product-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 40px 5%;
+  box-sizing: border-box;
+}
+
+.product-left {
+  flex: 1;
+  min-width: 320px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.thumbnail-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.thumbnail-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border: 3px solid lightblue;
+  border-radius: 6px;
+  transition: transform 0.2s, border 0.3s;
+  cursor: pointer;
+}
+
+.thumbnail-image:hover {
+  transform: scale(1.05);
+  border-color: dodgerblue;
+}
+
+.product-right {
+  flex: 1;
+  min-width: 320px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000;
+  margin-top: 10px;
+}
+
+.product-subtext {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.product-stock-info {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.star {
+  color: gold;
+  font-size: 1.3rem;
+}
+
+.star-empty {
+  color: #ccc;
+}
+
+.review-count {
+  margin-left: 10px;
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.buy-now-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 12px 25px;
+  border-radius: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+  width: fit-content;
+  transition: background-color 0.3s;
+}
+
+.buy-now-btn:hover {
+  background-color: #218838;
+}
+
+/* 📱 Mobile + Tablet Responsiveness */
+
+@media screen and (max-width: 1024px) {
+  .product-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 4%;
+  }
+
+  .main-image {
+    max-width: 100%;
+  }
+
+  .product-right {
+    align-items: center;
+    text-align: center;
+  }
+
+  .product-title {
+    font-size: 1.8rem;
+  }
+
+  .product-price {
+    font-size: 1.4rem;
+  }
+
+  .buy-now-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .thumbnail-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .product-title {
+    font-size: 1.5rem;
+  }
+
+  .product-description {
+    font-size: 0.95rem;
+  }
+
+  .product-price {
+    font-size: 1.2rem;
+  }
+
+  .buy-now-btn {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .rating .star {
+    font-size: 1.1rem;
+  }
+
+  .review-count {
+    font-size: 0.85rem;
+  }
+}

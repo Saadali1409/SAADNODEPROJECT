@@ -4,6 +4,9 @@ import BackEndUrl from "../utils/BackEndUrl";
 import axios from "axios";
 import Header from "../component/Header";
 import Footer from "../component/Footer";
+import "../css/productDisplay.css"; // Assuming you have a CSS file for styling
+
+
 const ProductDisplay = () => {
   const { id } = useParams();
   const [mydata, setMydata] = useState({});
@@ -19,7 +22,7 @@ const ProductDisplay = () => {
       const response = await axios.get(api);
       console.log(response.data);
       setMydata(response.data);
-      setimgList(response.data.images);
+      setimgList(response.data.image  );
       SetDefaultImage(response.data.defaultimage);
 
     } catch (error) {
@@ -31,23 +34,26 @@ const ProductDisplay = () => {
     loadData();
   }, []);
 
-  const ans = imglist.map((key) => {
+  const ans = imglist.map((key, index) => (
 
-    return (
-      <>
+    
         <img
           src={key}
+          key={index}
           width="50"
           height="50"
           style={{ border: "5px solid lightblue", margin: "5px" }}
           onMouseOver={() => {
             SetDefaultImage(key);
-          }}  
+          }}
+          
+          alt={`Thumbnail ${index}`}
         />
-        <br />
-      </>
-    );
-  });
+        
+        
+      
+  
+  ));
 
   return (
     <>

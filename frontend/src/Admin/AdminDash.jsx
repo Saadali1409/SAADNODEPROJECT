@@ -37,7 +37,7 @@ const AdminDashboard = () => {
             </li>
 
             <li>
-              <Link to="addproduct">Add Product</Link>
+              <Link to="addproducts">Add Product</Link>
             </li>
 
             <li>

@@ -1,119 +1,144 @@
+// ========================== IMPORTS ==========================
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudnary = require('../cloudinary');
+const cloudnary = require('../cloudinary'); // ✅ Correct cloudinary config
 const jwt = require('jsonwebtoken');
 const adminModel = require('../Models/AdminModel');
-// const OrderModel = require('../Models/OrderModel');
-const { response } = require('express');
 const ProductModel = require('../Models/ProductModel');
+// const OrderModel = require('../Models/OrderModel'); // uncomment if using Orders
 
-
-// -------------------------------------------// MULTIPLE STROGE 
-
+// ========================== CLOUDINARY STORAGE ==========================
+// This tells multer where to store files (Cloudinary in this case)
 const storage = new CloudinaryStorage({
-    cloudinary: cloudnary,
+    cloudinary: cloudnary, // ✅ our Cloudinary connection
     params: {
-        folder: 'projectuploads',
-        format: async (req, file) => 'jpeg',
-        public_id: async (req, file) => Date.now() + '-' + file.originalname
+        folder: 'projectuploads', // folder name in Cloudinary
+        format: async () => 'jpeg', // force all uploads to JPEG
+        public_id: async (req, file) => Date.now() + '-' + file.originalname // unique name
     }
 });
 
-const Upload = multer({ storage: storage }).array('image', 10);
+// Create multer upload middleware (max 10 images per request)
+const Upload = multer({ storage: storage }).array('images', 10);
 
 
-// -------------------------------------- // ADMIN LogIn
 
+
+
+// ========================== ADMIN LOGIN ==========================
 const AdminLogin = async (req, res) => {
+    const { adminId, password } = req.body; // Get login details from request body
+    console.log("Login request:", req.body);
 
-    const { adminId, password } = req.body;
+    const admin = await adminModel.findOne({ adminId : adminId }); // Check if admin exists
+    console.log("Found admin:", admin);
 
-    
-
-
-    const admin = await adminModel.findOne({ adminId });
-    
-    if (!admin){
-        return res.status (400).send ({msg:"invalid ID||"})
+    if (!admin) {
+        return res.status(400).send({ msg: "Invalid ID" });
     }
 
-    if (!admin.password !== password){
-        return res.status (400).send ({msg:"invalid password||"})
+    // ❌ Your old code had: if (!admin.password !== password) — wrong check
+    // ✅ Correct password check (no ! before admin.password)
+
+
+
+    if (admin.password !== password) {
+        return res.status(400).send({ msg: "Invalid password" });
     }
 
-   return res.status(200).send({ admin ,msg: "Login Successful",})
-}
+    // Create JWT token
+    const token = jwt.sign(
+        { id: admin._id },
+        process.env.jwt_SECRET, // secret key from .env
+        { expiresIn: '30days' } // token expiry
+    );
 
+     res.status(200).send({
+        admin, token,
+        msg: "Login Successfully!!",
+        
+    });
+};
 
-//    -----------------------------------// JWT AUTHENTICATION 
+// ========================== JWT AUTH ==========================
+const Auth = async (req, res) => {
+    const token = req.header("x-token"); // token sent from frontend
 
-const Auth =async (req, res) => {
-    const token =req.header("x-token");
-    console.log(token);
+    console.log( token);
 
-    if (!token)  return res.json(false);
+    if (!token) return res.json(false);
 
-    const verify = await jwt.verify(token, process.env.JWT);
-    if (!verify) return res.json(false);
-    console.log(verify);
+    
+        // Verify token
+        const verify = await jwt.verify(token, process.env.jwt_SECRET);
+        if (!verify) return res.json(false);
+        console.log(verify);
 
-    const user = await adminModel.findById(verify.id).select("password");
-    res.send(user);
-}
+        // Fetch user
+        const user = await adminModel.findById(verify.id).select("password");
+        res.send(user);
+    
+};
 
-// Upload Product Images
-
-const saveProduct =async (req, res) => {
-    Upload (req, res, async (err) => {
+// ========================== SAVE PRODUCT ==========================
+// This function only runs after Upload middleware has processed files
+const saveProduct = async (req, res) => {
+     Upload(req, res,async (err) => {
         if (err) {
             return res
             .status(500)
-            .send({ msg: "Image upload failed", error: err.message })
+            .send({msg:"Error In Uploading Image", error: err.message});
         }
+     })
 
-       
+    try {
+        // Multer + Cloudinary gives array of uploaded files
+        const imageURL = req.files.map((file) => file.path);
 
-        try {
-           const imageURL = req.files.map(file => file.path);
+        const { name, description, price, category } = req.body;
 
-            //  console.log(imageURL);
+        const Product = new ProductModel({
+           name: name,
+            description:description,
+            price:price,
+            category:category,
+            images: imageURL,
+            defaultimage: imageURL[0] // first image as main
+        });
 
-            const { name, description, price, category } = req.body;
-            //  console.log(req.body);
-            
-            const Product = new ProductModel({
-                name:name,
-                description: description,
-                price:price,
-                category:category,
-                images: imageURL,
-                defaultimage: imageURL[0] // Set the first image as the default image
-            });
-
-            await Product.save();
-             res.status(200).send("Product saved successfully" );
-        } catch (error) {
-            res.status(500).send( "Failed to save product" + error.message);
-
-         
-        }
-    })
+        await Product.save();
+        res.status(200).send("Product saved successfully");
+    } catch (error) {
+        res.status(500).send("Failed to save product: " + error.message);
+    }
 };
 
-
-
+// ========================== CUSTOMER ORDERS ==========================
 const customerOrder = async (req, res) => {
-
-    const order = await OrderModel.find();
-    console.log(order);
-    req.status(200).send(order);
+    
+  const orderr = await orderModel.find();
+  console.log(orderr)
+  res.status(200).send(orderr);
 };
 
 
+// Fetch all products
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await ProductModel.find();
+    res.status(200).send(products);
+  } catch (error) {
+    res.status(500).send("Failed to fetch products");
+  }
+};
 
+// ========================== EXPORTS ==========================
 module.exports = {
     AdminLogin,
     saveProduct,
     Auth,
-    customerOrder
+    customerOrder,
+    Upload, // ✅ exported so we can use in route
+
+      getAllProducts // <-- added
 };

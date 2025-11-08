@@ -13,8 +13,8 @@ const homeDisplay = async (req, res) => {
 
 const  productDisplay = async (req, res) => {
     const { id } = req.query
-    const product = await productModel.findById(id);
-    res.status(200).send(product);
+    const Product = await productModel.findById(id);
+    res.status(200).send(Product);
 }
 
 

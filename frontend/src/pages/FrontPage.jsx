@@ -149,7 +149,7 @@ const FrontPage = () => {
 
    {/* section 4 */}
 
-
+{/* 
 
    <div className='section2'>
      <h1> <span>Top selling furniture</span> </h1>
@@ -186,11 +186,11 @@ const FrontPage = () => {
          <button className='btn'>Add to cart</button>
      </div>
 
-  </div>
+  </div> */}
 
 {/* section 5 */}
 
-
+{/* 
 <h1  style={{ alignItems:"center", justifyContent:"center", marginLeft:"500px"}}>Special Discount </h1>
 
 <div class="discounts">
@@ -215,10 +215,10 @@ const FrontPage = () => {
     <p>Porta non pulvinar neque laoreet suspendisse.</p>
     <button>Browse Now</button>
   </div>
-</div>
+</div> */}
 
 {/* section 6 */}
-
+{/* 
 <div className="video-section">
       <video
         className="bg-video"
@@ -234,16 +234,16 @@ const FrontPage = () => {
           <p className="video-subtitle">
             Donec et odio pellentesque diam volutpat commodo amet consectetur adipiscing elit....
           </p>
-          {/* <button className="shop-now-btn">Shop Now</button> */}
+         
         </div>
       </div>
-    </div>
+    </div> */}
 
 
    {/* section 7 */}
 
 
-  <marquee behavior="scroll" direction="right" scrollamount="20" loop="infinite" >
+  {/* <marquee behavior="scroll" direction="right" scrollamount="20" loop="infinite" >
     <div className='marquee' style={{display:"flex", alignItems:"center", justifyContent:"space-between" ,marginTop:"20px",gap:"20px" }}>
       
         <img src="https://dukaan.b-cdn.net/700x700/webp/upload_file_service/c153799b-2716-4a2d-86a6-e8e4c2efc027/whatsapp-image-2023-02-19-at-11-46-23-pm.jpeg" alt="Team" style={{ width: "150px", height: "px", borderRadius:"20%" }} />
@@ -285,10 +285,10 @@ const FrontPage = () => {
 
 
 
-
+ */}
 
    {/* section 8 */}
-
+{/* 
 <div className="headding">
   <h2>Happy Clients</h2>
 </div>
@@ -314,7 +314,7 @@ const FrontPage = () => {
 
 
 
-</div>
+</div> */}
 
    </> );
 } 

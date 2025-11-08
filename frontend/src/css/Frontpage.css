@@ -7,7 +7,7 @@ body{
 
 .front-page {
         display: flex;
-        margin-top: 20px;
+        margin-top: 1px;
         min-height: 80vh;
         /* padding: 40px 20px; */
         background: #eef4f5;
@@ -37,14 +37,14 @@ body{
         margin-left: 50px;
     }
 
-    .front-page .content h1 span {
+    /* .front-page .content h1 span {
         background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
         font-size: 2.8rem;
         
-    }
+    } */
 
     .front-page .content p {
         font-size: 1.15rem;

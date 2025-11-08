@@ -1,13 +1,11 @@
-import  { useState } from 'react'
+import React, { useState } from 'react'
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import BackEndUrl from '../utils/BackEndUrl';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../css/AddProducts.css'
+import { toast, Toaster } from "react-hot-toast";
 
 
-
-// -----------------------------------------------------------//
 const AddProducts = () => {
     
     const[inp,setInp]=useState({})
@@ -20,12 +18,12 @@ const AddProducts = () => {
        
        setInp(values=>({...values,[name]:value}))
        
-     }
+     } 
 
      function handleFile(e){
        
        setImage(e.target.files)
-       console.log(image);
+       console.log(image); 
      }
          
       async function formSubmit(e) {
@@ -33,7 +31,8 @@ const AddProducts = () => {
          e.preventDefault()
         
           let api=`${BackEndUrl}/admin/productsave`;
-
+        
+          
          const formData=new FormData()
 
          for(const e in inp){
@@ -51,30 +50,15 @@ const AddProducts = () => {
             console.log(res.data)
          })
          console.log(formData)
-          toast.success("Product added successfull");
 
-  
+         toast.success("Product added successfully!");
+      } 
+    
+       
 
-    //    try {
-    //   const res = await axios.post(api, formData);
-    //   console.log(res.data);
-    //   toast.success('Product added successfully!', {
-    //     position: 'top-right',
-    //     autoClose: 3000,
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error('Failed to add product.', {
-    //     position: 'top-right',
-    //     autoClose: 3000,
-    //   });
-    // }
-
- }    
- 
   return (
     <>
-        <div id="contain">
+      <div id="contain">
         <Form id='frm' >
           <h3>Add Product</h3>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -92,7 +76,18 @@ const AddProducts = () => {
             <Form.Control type="number" name='price' placeholder='Price' onChange={handleInput} />
           </Form.Group>
 
-         
+          {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Label>Select Category</Form.Label> <br />
+            <select name="category" onChange={handleInput} style={{width:"200px", padding:"8px", borderRadius:"6px"}} >
+              Category
+              <option value="">category</option>
+              <option value="eyes"></option>
+              <option value="face">FEMALES</option>
+              <option value="lips">LIPS</option>
+              <option value="skin">SKIN</option>
+              <option value="nails">NAILS</option>
+            </select>
+          </Form.Group> */}
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Choose files</Form.Label>
@@ -104,9 +99,12 @@ const AddProducts = () => {
           </Button>
         </Form>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
+      {/* <Toaster position="top-center" reverseOrder={false} /> */}
     </>
   );
 }
+
+
+
 
 export default AddProducts

@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import BackEndUrl from '../utils/BackEndUrl';
 import axios from 'axios';
+import { toast } from "react-toastify"; // ✅ Add toast for feedback
+
 import '../css/userlogin.css'; // Assuming you have a CSS file for styling
+// import backvideo from '../images/furniturevideo.mp4'; // Path to your video file
 
 const Userlogin = () => {
 
@@ -31,18 +34,28 @@ const Userlogin = () => {
           email: email,
           password: password,
         });
-        localStorage.setItem("email", response.data.email);
-        console.log(response.data.msg);
+       localStorage.setItem("userToken", response.data.token); 
+       localStorage.setItem("userId", response.data.data._id);
+       localStorage.setItem("email", response.data.data.email);
+        localStorage.setItem("userName", response.data.data.name);
+        console.log("login success:", response.data.msg);
 
-        navigate("/userdash");
+        navigate("/");
       } catch (error) {
-        console.log(error);
+        console.log("Login Error:",error);
+        // ✅ Show toast if login fails
+      toast.error("❌ Invalid Email or Password!");
       }
     };
 
   return (
     <>
 
+    <div className="login-background-video">
+    {/* <video autoPlay muted loop>
+      <source src={backvideo} type="video/mp4" />
+    </video> */}
+    </div>
       <div className="login-containerr">
  
         <div className="login-form">

@@ -1,0 +1,134 @@
+/* Background setup similar to login */
+.checkout-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  background: url('https://aarsunwoods.b-cdn.net/sofa%20set%202/Wooden-Sofa-Set-Luxury-Living-Room-Furniture-UH-SF-0016-jpg.webp') no-repeat center center/cover;
+  overflow: hidden;
+}
+
+/* Optional dark overlay */
+.checkout-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+}
+
+/* Heading styling */
+.chkhead {
+  font-size: 2.5rem;
+  color: #fff;
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  margin-bottom: 20px;
+  z-index: 1;
+}
+
+/* Main form container */
+.checkout-container {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  padding: 35px 30px;
+  width: 90%;
+  max-width: 500px;
+  color: #fff;
+  transition: all 0.4s ease;
+}
+
+.checkout-container:hover {
+  box-shadow: 0 10px 45px rgba(0, 0, 0, 0.7);
+  transform: translateY(-5px);
+}
+
+/* Inside form */
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.checkout-form h3 {
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Label and input styling */
+.checkout-form label {
+  font-weight: 500;
+  color: #f1f1f1;
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.checkout-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.checkout-form input:focus {
+  outline: none;
+  border-color: #90caf9;
+  box-shadow: 0 0 8px rgba(144, 202, 249, 0.6);
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Button styling */
+#BTN {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#BTN:hover {
+  background-color: #1976d2;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .checkout-container {
+    padding: 25px 20px;
+  }
+
+  .chkhead {
+    font-size: 2rem;
+  }
+
+  #BTN {
+    font-size: 1rem;
+  }
+}

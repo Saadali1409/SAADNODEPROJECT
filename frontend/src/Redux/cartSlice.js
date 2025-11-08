@@ -1,5 +1,4 @@
-import { act } from "react"
-import { data } from "react-router-dom";
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const  cartSlice = createSlice({
@@ -23,9 +22,12 @@ const  cartSlice = createSlice({
         } ,
         dataDecrease: (state, actions) => {
             const item = state.cart.find(e => e.id == actions.payload.id);
-            if (item ) {
-                item.qnty--;
+            if (!item ) {
+                return
             } 
+            if(item.qnty>1){
+                item.qnty--
+            }
             else {
                 state.cart = state.cart.filter(e => e.id !== actions.payload.id)
             }
@@ -44,6 +46,6 @@ const  cartSlice = createSlice({
         
         }) 
 
-        export const {aadTocard,dataIncrease,dataDecrease,productEmpty,cartEmpty,itemRemove}=cartSlice.actions
+export const { addToCart, dataIncrease, dataDecrease, productEmpty, cartEmpty, itemRemove } = cartSlice.actions
 
         export default cartSlice.reducer

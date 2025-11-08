@@ -6,54 +6,67 @@ import axios from "axios";
 import Table from "react-bootstrap/Table";
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import '../css/cheackOut.css'
 
 const CheckOut = () => {
 
     const navigate = useNavigate();
-    
+    const [myData, setMydata] = useState({});
+    const cartData = useSelector(state => state.mycart.cart);
 
-    const[myData, setMydata] = useState({});
-
-    const cartData = useSelector(state=>state.mycart.cart);
-    console.log(cartData)
-
-
-    const loadData = async()=>{
+    const loadData = async () => {
         let api = `${BackEndUrl}/user/getuser/?userid=${localStorage.getItem('userid')}`
-        try{
-        const response = await axios.get(api);
-        setMydata(response.data);
-        // setProdata(response.data)
-        console.log(response.data);
-        }
-        catch(err){
+        try {
+            const response = await axios.get(api);
+            setMydata(response.data);
+            console.log(response.data);
+        } catch (err) {
             toast.error("Failed to load user data!");
         }
-        
     }
-        useEffect(()=>{
-            if(localStorage.getItem('username')){
-                navigate('/userlogin')
+
+    useEffect(() => {
+        if (!localStorage.getItem('username')) {
+            navigate('/userlogin');
+        }
+        loadData();
+    }, []);
+
+    let totalAmount = 0;
+    let productName = "";
+    let productImg = "";
+
+    cartData.forEach((key) => {
+        totalAmount += key.price * key.qnty;
+        productName += key.name + " ";
+        productImg += key.defaultimage;
+    });
+
+    // ✅ Function to dynamically load Razorpay script
+    const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+            if (window.Razorpay) {
+                // already loaded
+                resolve(true);
+                return;
             }
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
 
-            loadData()
-          
-        }, [])
+    const initPay = (data) => {
+        // ✅ check if Razorpay is available before using it
+        if (!window.Razorpay) {
+            toast.error("Razorpay SDK not loaded properly!");
+            return;
+        }
 
-
-        let totalAmount = 0;
-        let productName= "";
-        let productImg= "";
-
-        const ans = cartData.map((key)=>{
-            totalAmount += key.price * key.qnty;
-            productName += key.name + " ";
-            productImg += key.defaultimage;
-        })
-
-        const initPay = (data) => {
-          const options = {
-            key: "rzp_test_NYJEc9muczQH1r",
+        const options = {
+            key: "rzp_test_1H7G6ODNdV9FtJ",
             amount: data.totalAmount,
             currency: data.currency,
             name: productName,
@@ -62,79 +75,83 @@ const CheckOut = () => {
             order_id: data.id,
 
             handler: async (response) => {
-              try {
-                const verifyURL = "http://localhost:5000/api/payment/verify";
-                const  data  = await axios.post(verifyURL, response);
-                console.log('verification response: ', response.data);
-                
-              } catch (error) {
-                console.log(error);
-              }
+                try {
+                    const verifyURL = "http://localhost:5000/api/payment/verify";
+                    const res = await axios.post(verifyURL, response);
+                    console.log('verification response: ', res.data);
+                } catch (error) {
+                    console.log(error);
+                }
             },
-          };
-          const rzp1 = new window.Razorpay(options);
-          rzp1.open();
         };
 
-        const handlePay = async (e) => {
-          e.preventDefault();
-            try {
-              const orderURL = "http://localhost:5000/api/payment/orders";
-              const {data} = await axios.post(orderURL,{
-                
-              amount: totalAmount, 
-              products:productName, 
-              name:myData.name, 
-              city:myData.city, 
-              address:myData.address,
-              pincode:myData.pincode, 
-              email:myData.email});
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
+    };
 
+    const handlePay = async (e) => {
+        e.preventDefault();
 
-              console.log(data);
-              initPay(data.data)
-            } catch (error) {
-              console.log(error);
-            }
-        }        
-  return (
-    <>
-      {/* <img src={checkbg} style={{width:"100%", maxHeight:"500px"}}/> */}
-    
-      <div className="checkout-page">
-        <h1 className="chkhead">CHECK-OUT</h1>
-        
-        <div className="checkout-container">
-      
-          <form className="checkout-form">
-            <h3 style={{ textAlign: "center" }}>All Details</h3>
-            <label>Name:</label>
-            <input type="text" value={myData.name || ""} readOnly />
+        // ✅ Ensure Razorpay SDK is loaded before using it
+        const loaded = await loadRazorpayScript();
+        if (!loaded) {
+            toast.error("Failed to load Razorpay SDK. Check your internet connection.");
+            return;
+        }
 
-            <label>Email:</label>
-            <input type="email" value={myData.email || ""} readOnly />
+        try {
+            const orderURL = "http://localhost:5000/api/payment/orders";
+            const { data } = await axios.post(orderURL, {
+                amount: totalAmount,
+                products: productName,
+                name: myData.name,
+                city: myData.city,
+                address: myData.address,
+                pincode: myData.pincode,
+                email: myData.email
+            });
 
-            <label>Shipping Address:</label>
-            <input type="text" value={myData.address || ""} readOnly />
+            console.log("Order Created:", data);
+            initPay(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-            <label>City:</label>
-            <input type="text" value={myData.city || ""} readOnly />
+    return (
+        <>
+            <div className="checkout-page">
+                <h1 className="chkhead">CHECK-OUT</h1>
 
-            <label>Contact:</label>
-            <input type="number" value={myData.contact || ""} readOnly />
+                <div className="checkout-container">
+                    <form className="checkout-form">
+                        <h3 style={{ textAlign: "center" }}>All Details</h3>
+                        <label>Name:</label>
+                        <input type="text" value={myData.name || ''} readOnly required />
 
-            <label>Pincode:</label>
-            <input type="number" value={myData.pincode || ""} readOnly />
-          </form>
+                        <label>Email:</label>
+                        <input type="email" value={myData.email || ''} readOnly required />
 
-          <button type="button" id="BTN" onClick={handlePay}>
-            Proceed to Pay
-          </button>
-        </div>
-      </div>
-    </>
-  );
-}
+                        <label>Shipping Address:</label>
+                        <input type="text" value={myData.address || ''} readOnly required />
 
+                        <label>City:</label>
+                        <input type="text" value={myData.city || ''} readOnly required />
 
-export default CheckOut
+                        <label>Contact:</label>
+                        <input type="number" value={myData.contact || ''} readOnly required />
+
+                        <label>Pincode:</label>
+                        <input type="number" value={myData.pincode || ''} readOnly required />
+                    </form>
+
+                    <button type="button" id="BTN" onClick={handlePay}>
+                        Proceed to Pay
+                    </button>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default CheckOut;

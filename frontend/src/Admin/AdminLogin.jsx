@@ -5,6 +5,7 @@ import { Outlet,useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import '../css/AdminLogin.css'
+import Header from '../component/Header';
 
 const AdminLogin = () => {
 
@@ -17,7 +18,7 @@ const AdminLogin = () => {
         
         e.preventDefault();
 
-        let api = `${BackEndUrl}/admin/adminlogin`;
+        // let api = `${BackEndUrl}/admin/adminlogin`;
 
         try {
             
@@ -29,7 +30,7 @@ const AdminLogin = () => {
 
            const {token, admin, msg} = response.data;
 
-           localStorage.setItem("adminId",adminId._id);
+           localStorage.setItem("adminId",admin._id);
             localStorage.setItem( "token", token);
 
             toast.success("Admin Login successful",)
@@ -40,7 +41,7 @@ const AdminLogin = () => {
 
         } catch (error) {
           toast.error(error?.response?.data?.msg || "login failed");
-            console.error("Login error:", error?.response?.data || error.message);
+            console.log("Login error:", error?.response?.data || error.message);
            
             
         }
@@ -49,6 +50,8 @@ const AdminLogin = () => {
   return (
     
     <>
+    <Header/>
+    <Outlet />
      <div className="admin-login-page">
       <div className="login-box">
         <h2>Admin Login</h2>
@@ -76,10 +79,10 @@ const AdminLogin = () => {
       </div>
         <ToastContainer />
     </div>
-    <TOster position="top-center"/>
+    {/* <Toster position="top-center"/> */}
        
     </>
   )
 }
 
-export default AdminLogin
+export default AdminLogin;

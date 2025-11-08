@@ -32,27 +32,30 @@ const userLogin=async(req, res)=>{
 
         try {
             
-            const user = await userModel.findOne({email: email})
+            const user = await userModel.findOne({email })
             
             if(!user){
-                res.status(401).send({msg: "invalid user"})
+               return  res.status(401).send({msg: "invalid user"})
             }
-           const match=await bcrypt.compare(req.body.password,user.password)
+           const match=await bcrypt.compare(password,user.password)
 
            if(!match){
-            res.status(401).send({ msg: "invalid password" });
+           return res.status(401).send({ msg: "invalid password" });
            }
 
-           const token = await jwt.sign({id: user._id}, process.env.JWT,{expiresIn: '20days'});
-           console.log(token);
+           const token =  jwt.sign({id: user._id}, process.env.JWT_SECRET,{expiresIn: '30d'});
            
-            res.status(200).send({msg: "Login!",token:token,data:user})
+           
+            res.status(200).send({msg: "Login successful!",
+                token,
+                data:user});
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            res.status(500).send({msg:"server error"});
             
         }
         
-}
+};
         //JWT Authentication
 
       const userAuth = async (req, res) => {
@@ -62,7 +65,7 @@ const userLogin=async(req, res)=>{
          if(!token) return res.json(false);
     
     
-      const verify = await jwt.verify(token, process.env.JWT);
+      const verify = await jwt.verify(token, process.env.JWT_SECRET );
         if(!verify) return res.json(false)
       console.log(verify);
     
