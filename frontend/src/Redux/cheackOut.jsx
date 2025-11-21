@@ -1,12 +1,11 @@
-import React from 'react'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BackEndUrl from "../utils/BackEndUrl";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import '../css/cheackOut.css'
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "../css/cheackOut.css";
 
 const CheckOut = () => {
 
@@ -15,20 +14,35 @@ const CheckOut = () => {
     const cartData = useSelector(state => state.mycart.cart);
 
     const loadData = async () => {
-        let api = `${BackEndUrl}/user/getuser/?userid=${localStorage.getItem('userid')}`
+
+        // ✅ FIXED: use the same key name as in Userlogin.jsx (was 'userid', now 'userId')
+        const userId = localStorage.getItem("userId"); // <-- FIXED
+
+        if (!userId) {
+            toast.error("User ID missing — please log in again!");
+            navigate("/userlogin");
+            return;
+        }
+
+        let api = `${BackEndUrl}/user/getuser/?userid=${userId}`; // <-- FIXED
         try {
             const response = await axios.get(api);
             setMydata(response.data);
             console.log(response.data);
         } catch (err) {
             toast.error("Failed to load user data!");
+            console.error(err);
         }
-    }
+    };
 
     useEffect(() => {
-        if (!localStorage.getItem('username')) {
-            navigate('/userlogin');
+
+        // ✅ FIXED: also match the correct key name from login (was 'username', now 'userName')
+        if (!localStorage.getItem("userName")) { // <-- FIXED
+            navigate("/userlogin");
+            return;
         }
+
         loadData();
     }, []);
 
@@ -42,11 +56,10 @@ const CheckOut = () => {
         productImg += key.defaultimage;
     });
 
-    // ✅ Function to dynamically load Razorpay script
+    // ✅ Razorpay script loader
     const loadRazorpayScript = () => {
         return new Promise((resolve) => {
             if (window.Razorpay) {
-                // already loaded
                 resolve(true);
                 return;
             }
@@ -59,7 +72,6 @@ const CheckOut = () => {
     };
 
     const initPay = (data) => {
-        // ✅ check if Razorpay is available before using it
         if (!window.Razorpay) {
             toast.error("Razorpay SDK not loaded properly!");
             return;
@@ -78,7 +90,7 @@ const CheckOut = () => {
                 try {
                     const verifyURL = "http://localhost:5000/api/payment/verify";
                     const res = await axios.post(verifyURL, response);
-                    console.log('verification response: ', res.data);
+                    console.log("verification response: ", res.data);
                 } catch (error) {
                     console.log(error);
                 }
@@ -92,7 +104,6 @@ const CheckOut = () => {
     const handlePay = async (e) => {
         e.preventDefault();
 
-        // ✅ Ensure Razorpay SDK is loaded before using it
         const loaded = await loadRazorpayScript();
         if (!loaded) {
             toast.error("Failed to load Razorpay SDK. Check your internet connection.");
@@ -108,7 +119,7 @@ const CheckOut = () => {
                 city: myData.city,
                 address: myData.address,
                 pincode: myData.pincode,
-                email: myData.email
+                email: myData.email,
             });
 
             console.log("Order Created:", data);
@@ -127,22 +138,22 @@ const CheckOut = () => {
                     <form className="checkout-form">
                         <h3 style={{ textAlign: "center" }}>All Details</h3>
                         <label>Name:</label>
-                        <input type="text" value={myData.name || ''} readOnly required />
+                        <input type="text" value={myData.name || ''}  />
 
                         <label>Email:</label>
-                        <input type="email" value={myData.email || ''} readOnly required />
+                        <input type="email" value={myData.email || ''}  />
 
                         <label>Shipping Address:</label>
-                        <input type="text" value={myData.address || ''} readOnly required />
+                        <input type="text" value={myData.address}  />
 
                         <label>City:</label>
-                        <input type="text" value={myData.city || ''} readOnly required />
+                        <input type="text" value={myData.city }  />
 
                         <label>Contact:</label>
-                        <input type="number" value={myData.contact || ''} readOnly required />
+                        <input type="number" value={myData.contact }  />
 
                         <label>Pincode:</label>
-                        <input type="number" value={myData.pincode || ''} readOnly required />
+                        <input type="number" value={myData.pincode }  />
                     </form>
 
                     <button type="button" id="BTN" onClick={handlePay}>

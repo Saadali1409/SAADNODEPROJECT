@@ -27,7 +27,7 @@
 /* Heading styling */
 .chkhead {
   font-size: 2.5rem;
-  color: #fff;
+  color: #e7e3e3;
   letter-spacing: 2px;
   font-weight: 700;
   text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
@@ -39,7 +39,7 @@
 .checkout-container {
   position: relative;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(242, 238, 238, 0.413);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 12px;
@@ -65,7 +65,7 @@
 
 .checkout-form h3 {
   text-align: center;
-  color: #fff;
+  color: #050505;
   font-weight: 600;
   margin-bottom: 10px;
 }
@@ -73,7 +73,7 @@
 /* Label and input styling */
 .checkout-form label {
   font-weight: 500;
-  color: #f1f1f1;
+  color: black;
 }
 
 .checkout-form input {
@@ -82,7 +82,7 @@
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: #111010;
   font-size: 16px;
   transition: all 0.3s ease;
 }
